@@ -67,6 +67,12 @@ def main() -> None:
     os.makedirs("/output", exist_ok=True)
     with open("/output/entry.txt", "w", encoding="utf-8", newline="") as f:
         f.write(LINE)
+    # Re-read what was written: the graded file must be byte-identical
+    # to the entry line, with no stray newline or truncation.
+    with open("/output/entry.txt", "r", encoding="utf-8", newline="") as f:
+        written = f.read()
+    if written != LINE:
+        raise SystemExit("written entry.txt does not match the entry line")
     print(f"wrote /output/entry.txt ({len(LINE)} characters)")
 
 
